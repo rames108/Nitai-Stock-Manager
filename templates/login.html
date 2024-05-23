@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            background-color: #EEEEEE;
+            font-family: Calibri, sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+        h1 {
+            color: black;
+            padding: 100px;
+            text-align: center;
+        }
+        .center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .bottom{<!--  look at this later -->
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+        }
+        input[type=text], select {
+            width: 100%;
+            padding: 15px 120px;
+            margin: 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=submit], select {
+            padding: 10px 30px
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size:60px;">Login</h1> 
+    <div class="center">
+        <form>
+            <input type="text" id="txtEmail" name="txtEmail" maxlength=150 placeholder="Email"><br>
+            <input type="text" id="txtPword" name="txtPword" maxlength=50 placeholder="Password">
+            <br>
+            <a href="{{ url_for('otp')}}">Forgot Password</a>
+            <br>
+            <br>
+            <div class="center">
+                <input type="Submit" value="Login" style="font-size : 20px; width: 50%; height: 50px;">
+            </div>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <style>
+        body {
+            background-color: #EEEEEE;
+            font-family: Calibri, sans-serif;
+            padding: 0;
+            margin: 0;
+        }
+        h1 {
+            color: black;
+            padding: 100px;
+            text-align: center;
+        }
+        .center{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .bottom{<!--  look at this later -->
+            display: flex;
+            justify-content: center; 
+            align-items: center;
+        }
+        input[type=text], select {
+            width: 100%;
+            padding: 15px 80px;
+            margin: 10px 0;
+            display: inline-block;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input[type=submit], select {
+            padding: 10px
+        }
+    </style>
+</head>
+<body>
+    <h1 style="font-size:60px;">Forgotten Password</h1> 
+    <div class="center">
+        <form>
+            <input type="text" id="txtOTP" name="txtOTP" maxlength=150 placeholder="Enter OTP">
+            <br>
+            <br>
+            <div class="center">
+                <input type="Submit" value="Submit" style="font-size : 20px; width: 50%; height: 50px;"> <!-- function to send otp will be done later-->
+            </div>
+            <p>Check your email inbox for a OTP, to change your password contact an admin<p>
+        </form>
+    </div>
+</body>
+</html>
