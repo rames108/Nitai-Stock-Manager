@@ -1,0 +1,14 @@
+<!-- item_info.html -->
+{% extends "base.html" %} {% block title %}Item{% endblock %} {% block content%}
+
+  <h1>{{ item.txtItemName }}</h1>
+  <p>Price: {{ item.txtItemPrice }}</p>
+  <p>Description: {{ item.txtItemDesc }}</p>
+  <p>Stock Available: {{ item.txtItemStock }}</p>
+  <p>Minimum stock: {{ item.txtItemMin }}</p>
+  <!--<p>{{ item.image }}</p>-->
+
+  <!--the above display relevant information about the items-->
+
+  <!--space for more fields-->
+{% endblock %}

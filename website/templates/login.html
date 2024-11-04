@@ -1,0 +1,49 @@
+{% extends "base.html" %} {% block title %}Login{% endblock %} {% block content
+    %}
+    <style><!-- CSS to make sure that the form is in the centre-->
+      .form-container {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+      }
+      
+      form {
+        width: 50%;
+        margin: 0 auto;
+      }
+    </style>
+    <div class="form-container">
+      <form method="POST"><!-- POST means the form data will be sent to the server as part of the request body -->
+        <h3 align="center">Login</h3>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            name="email"
+            placeholder="Enter email"
+            maxlength="150"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            name="password"
+            placeholder="Enter password"
+            maxlength="50"
+          />
+        </div>
+        <a href="{{ url_for('auth.forpass') }}">Forgot Password</a>
+        <!-- meant to send user to forgot password page -->
+        <br>
+        <br>
+        <button type="submit" class="btn btn-primary">Login</button><!-- Allows user entry to the system if the Login is correct-->
+      </form>
+    </div>
+
+    {% endblock %}
+    
