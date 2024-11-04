@@ -129,7 +129,7 @@ def forpass():
             send_otp_email(email, otp)
             
             flash('OTP sent to your email address. Please check your email to verify.')
-            return redirect(url_for('otp.html'))
+            return redirect(url_for('otp.html'), user=current_user)
         else:
             flash('Email does not exist in our records.', category='error')
     return render_template('forpass.html')
