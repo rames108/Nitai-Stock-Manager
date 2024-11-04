@@ -1,0 +1,41 @@
+<!-- users.html -->
+
+{% extends "base.html" %} 
+{% block title %}Users{% endblock %} 
+{% block content%}
+
+<style>
+    .tile {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 250px; /* Increased the width to accommodate more text */
+        height: 150px; /* Set a fixed height to prevent overflow */
+        overflow: hidden; /* Hide any content that overflows the tile */
+        text-overflow: ellipsis; /* Add an ellipsis to indicate truncated text */
+    }
+    .tile h2 {
+        font-size: 18px; /* Reduced the font size to fit more text */
+    }
+    .tile p {
+        font-size: 14px; /* Reduced the font size to fit more text */
+    }
+</style>
+
+<br>
+<h1>Users</h1>
+
+<!-- Display users in tiles -->
+{% for user in users %}
+<div class="tile">
+    <a href="{{ url_for('auth.user_info', user_id=user.id) }}"><!--testing here-->
+        <h2>name: {{ user.first_name }}</h2>
+        <p>Email: {{ user.email }}</p>
+    </a>
+    <script></script>
+</div>
+{% endfor %}
+
+{% endblock %}
