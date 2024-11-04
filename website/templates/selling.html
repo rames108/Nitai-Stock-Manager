@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}Selling{% endblock %}
+
+{% block content %}
+  <style>
+    .button-container {
+      position: absolute;
+      top: 92px; /* adjust this value to match the height of your header */
+      right: 50px; /* adjust this value to create some space from the right edge */
+    }
+    .button {
+      margin: 10px; /* add some margin to create some space */
+      padding: 10px 20px; /* add some padding */
+      border-radius: 5px; /* add some rounded corners */
+      cursor: pointer; /* change cursor shape on hover */
+    }
+    .additem {
+      background-color: #4CAF50; /* green background */
+    }
+    .remitem {
+      background-color: #cc2020; /* red background */
+    }
+    .button button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #ffffff; /* make the text white */
+    }
+    .tile {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 250px;
+        height: 150px;
+        overflow: hidden;
+    }
+    .tile h2 {
+        font-size: 18px;
+    }
+    .tile p {
+        font-size: 14px;
+    }
+    .tile .read-more {
+        font-size: 12px;
+        color: #337ab7;
+        cursor: pointer;
+    }
+    .tile .read-more:hover {
+        color: #23527c;
+    }
+    .tile .full-text {
+        display: none;
+    }
+  </style>
+  </style>
+
+  <!-- <div>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <ul>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+      {% endif %}
+    {% endwith %}
+  </div>-->
+
+  <br>
+  <h1>Selling</h1>
+
+  <div class="button-container">
+    <a class="additem button" href="/btnAddItemPage"><button>Add Item</button></a>
+    <a class="remitem button"><button>Remove Item</button></a>
+  </div>
+
+  <!-- Display items in tiles -->
+  {% for item in items %}
+  <div class="tile">
+    <a href="{{ url_for('auth.item_info', item_id=item.id) }}">
+      <h2>{{ item.txtItemName }}</h2>
+      <p>Price: {{ item.txtItemPrice }}</p>
+    </a>
+  </div>
+  {% endfor %}
+
+{% endblock %}
