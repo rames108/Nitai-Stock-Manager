@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+
+{% block title %}Selling{% endblock %}
+
+{% block content %}
+  <style>
+    .button-container {
+      position: absolute;
+      top: 92px; /* adjust this value to match the height of your header */
+      right: 50px; /* adjust this value to create some space from the right edge */
+    }
+    .button {
+      margin: 10px; /* add some margin to create some space */
+      padding: 10px 20px; /* add some padding */
+      border-radius: 5px; /* add some rounded corners */
+      cursor: pointer; /* change cursor shape on hover */
+    }
+    .additem {
+      background-color: #4CAF50; /* green background */
+    }
+    .remitem {
+      background-color: #cc2020; /* red background */
+    }
+    .button button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #ffffff; /* make the text white */
+    }
+    .tile {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 250px;
+        height: 150px;
+        overflow: hidden;
+    }
+    .tile h2 {
+        font-size: 18px;
+    }
+    .tile p {
+        font-size: 14px;
+    }
+    .tile .read-more {
+        font-size: 12px;
+        color: #337ab7;
+        cursor: pointer;
+    }
+    .tile .read-more:hover {
+        color: #23527c;
+    }
+    .tile .full-text {
+        display: none;
+    }
+    .remove-btn {
+      background-color: #cc2020;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background-color: #a01818;
+    }
+    .hidden {
+      display: none;
+    }
+  </style>
+
+  <br>
+  <h1>Selling</h1>
+
+  <div class="button-container">
+    <a class="additem button" href="/btnAddItemPage"><button>Add Item</button></a>
+    <a class="remitem button" id="toggleRemoveBtn"><button>Remove Item</button></a>
+  </div>
+
+  <!-- Display items in tiles -->
+  {% for item in items %}
+  <div class="tile">
+    {% if item.image %}
+      <img src="{{ url_for('auth.serve_image', item_id=item.id) }}" 
+           alt="{{ item.txtItemName }}" 
+           style="max-width: 200px; max-height: 200px;"
+      >
+    {% endif %}
+    <a href="{{ url_for('auth.item_info', item_id=item.id) }}">
+      <h2>{{ item.txtItemName }}</h2>
+      <p>Price: {{ item.txtItemPrice }}</p>
+    </a>
+    <button class="remove-btn hidden" data-item-id="{{ item.id }}">Remove</button>
+  </div>
+  {% endfor %}
+
+  <!-- Confirmation Modal -->
+  <div id="confirmModal" class="modal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.4);">
+    <div class="modal-content" style="background-color:#fefefe; margin:15% auto; padding:20px; border:1px solid #888; width:80%;">
+      <p>Are you sure you want to remove this item?</p>
+      <button id="confirmRemove">Yes, Remove</button>
+      <button id="cancelRemove">Cancel</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleRemoveBtn = document.getElementById('toggleRemoveBtn');
+      const removeButtons = document.querySelectorAll('.remove-btn');
+      const confirmModal = document.getElementById('confirmModal');
+      let itemToRemove = null;
+
+      // Toggle remove buttons visibility
+      toggleRemoveBtn.addEventListener('click', function() {
+        removeButtons.forEach(btn => btn.classList.toggle('hidden'));
+      });
+
+      // Show confirmation modal
+      removeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          itemToRemove = this.getAttribute('data-item-id');
+          confirmModal.style.display = 'block';
+        });
+      });
+
+      // Confirm remove
+      document.getElementById('confirmRemove').addEventListener('click', function() {
+        if (itemToRemove) {
+          fetch(`/remove_item/${itemToRemove}`, {
+            method: 'POST'
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Remove the tile from the page
+              const removedTile = document.querySelector(`.tile button[data-item-id="${itemToRemove}"]`).closest('.tile');
+              removedTile.remove();
+              confirmModal.style.display = 'none';
+            } else {
+              alert(data.message);
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('An error occurred while removing the item.');
+          });
+        }
+      });
+
+      // Cancel remove
+      document.getElementById('cancelRemove').addEventListener('click', function() {
+        confirmModal.style.display = 'none';
+        itemToRemove = null;
+      });
+    });
+  </script>
+{% endblock %}

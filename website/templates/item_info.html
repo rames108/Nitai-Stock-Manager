@@ -1,0 +1,19 @@
+<!-- item_info.html -->
+{% extends "base.html" %} {% block title %}Item{% endblock %} {% block content%}
+
+  {% if item.image %}
+  <img src="{{ url_for('auth.serve_image', item_id=item.id) }}" 
+      alt="{{ item.txtItemName }}" 
+      style="max-width: 300px; max-height: 300px;"
+  >
+  {% else %}
+  <p>No image available</p>
+  {% endif %}
+
+  <h1>{{ item.txtItemName }}</h1>
+  <p>Price: {{ item.txtItemPrice }}</p>
+  <p>Description: {{ item.txtItemDesc }}</p>
+  <p>Stock Available: {{ item.txtItemStock }}</p>
+  <p>Minimum stock: {{ item.txtItemMin }}</p>
+  
+{% endblock %}
