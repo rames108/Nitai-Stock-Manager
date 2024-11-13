@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Forgotten Password{% endblock %}
+
+{% block content %}
+<style>
+  .form-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+  }
+ 
+  form {
+    width: 50%;
+    margin: 0 auto;
+  }
+</style>
+
+<div class="form-container"><!-- This is where the user puts their email in-->
+  <form method="POST">
+    <h3 align="center">Forgot Password</h3>
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input 
+        maxlength="150"
+        type="email" 
+        class="form-control" 
+        id="email" 
+        name="email" 
+        placeholder="Enter Email"
+        required
+      /><!-- maxlength of 150, required shows that this field needs to be filled-->
+    </div>
+    <br/>
+    <button type="submit" class="btn btn-primary">Send OTP</button>
+  </form>
+{% endblock %}
