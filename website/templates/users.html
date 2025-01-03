@@ -1,0 +1,86 @@
+<!-- users.html -->
+
+{% extends "base.html" %} 
+{% block title %}Users{% endblock %} 
+{% block content%}
+
+<style>
+    .tile {
+        display: inline-block;
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        width: 250px; /* Increased the width to accommodate more text */
+        height: 150px; /* Set a fixed height to prevent overflow */
+        overflow: hidden; /* Hide any content that overflows the tile */
+        text-overflow: ellipsis; /* Add an ellipsis to indicate truncated text */
+    }
+    .tile h2 {
+        font-size: 18px; /* Reduced the font size to fit more text */
+    }
+    .tile p {
+        font-size: 14px; /* Reduced the font size to fit more text */
+    }
+    .button button {
+        background: none; /* no background for button */
+        border: none; /* no border for button */
+        padding: 0; /* no padding for button */
+        color: #ffffff; /* make the text white */
+    }
+    .button-container {
+        position: absolute;
+        top: 92px; /* adjust this value to match the height of your header */
+        right: 50px; /* adjust this value to create some space from the right edge */
+      }
+      form {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
+    
+    form input[type="text"] {
+        padding: 10px;
+        width: 500px; /* Adjust width as needed */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    
+    form button {
+        padding: 10px 15px;
+        margin-left: 10px;
+        background-color: #4CAF50; /* Green background */
+        color: white; /* White text */
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    
+    form button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+      
+</style>
+
+<br>
+<h1>Users</h1>
+
+<a href="{{ url_for('auth.new_user') }}" class="btn btn-primary button-container">Create New User</a> <!--sends the user to page to create new user-->
+
+<form method="GET" action="{{ url_for('auth.searchUsers') }}" style="margin-bottom: 20px;">
+    <input type="text" maxlength="100" name="query" placeholder="Search for users..." required>
+    <button type="submit">Search</button>
+  </form>
+
+<!-- Display users in tiles -->
+{% for user in users %}
+<div class="tile">
+    <a href="{{ url_for('auth.user_info', user_id=user.id) }}"><!--testing here-->
+        <h2>name: {{ user.name }}</h2>
+        <p>Email: {{ user.email }}</p>
+        <p>Admin: {{ user.is_admin }}</p>
+    </a>
+</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+    %}<!--This is what is referred to as home in the code-->
+    <br>
+    <h1 align="center">Welcome to your dashboard, {{ user.name }}!</h1>
+    <br>
+
+      <h3 align="center">Items with Low Stock</h3>
+
+      {% if low_stock %}
+          <table align="center" border="1">
+              <tr>
+                  <th>Item Name</th>
+                  <th>Current Stock</th>
+                  <th>Minimum Stock</th>
+              </tr>
+              {% for item in low_stock %}
+              <tr align="center">
+                  <td>{{ item.txtItemName }}</td>
+                  <td>{{ item.intItemStock }}</td>
+                  <td>{{ item.intItemMin }}</td>
+              </tr>
+              {% endfor %}
+          </table>
+      {% else %}
+          <p align="center">All items are sufficiently stocked!</p>
+      {% endif %}
+
+    {% endblock %}

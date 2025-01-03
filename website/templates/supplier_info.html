@@ -1,0 +1,15 @@
+<!-- supplier_info.html -->
+{% extends "base.html" %} <!-- Inherit from the base template -->
+{% block title %}Suppliers{% endblock %} <!-- Set the title of the page -->
+{% block content%}
+
+<h1>{{ chosen_supplier.name }}</h1> <!-- Display the name of the selected supplier -->
+<p>Supplier Email: {{ chosen_supplier.email }}</p> <!-- Display the email of the selected supplier -->
+<p>Supplier Description: {{ chosen_supplier.description }}</p> <!-- Display the description of the selected supplier -->
+<p>Supplier Location: {{ chosen_supplier.location }}</p> <!-- Display the location of the selected supplier -->
+
+<!-- The above displays relevant information about the supplier -->
+
+<!-- Space for more fields can be added here if needed -->
+
+{% endblock %} <!-- End of content block -->
