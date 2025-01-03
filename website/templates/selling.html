@@ -1,0 +1,269 @@
+{% extends "base.html" %}
+
+{% block title %}Selling{% endblock %}
+
+{% block content %}
+  <style>
+    /* Styles for the button container positioning */
+    .button-container {
+      position: absolute;
+      top: 92px; /* adjust this value to match the height of your header */
+      right: 50px; /* adjust this value to create some space from the right edge */
+    }
+    
+    /* General styles for buttons */
+    .button {
+      margin: 10px; /* add some margin to create some space */
+      padding: 10px 20px; /* add some padding */
+      border-radius: 5px; /* add some rounded corners */
+      cursor: pointer; /* change cursor shape on hover */
+    }
+    
+    /* Specific styles for add item button */
+    .additem {
+      background-color: #4CAF50; /* green background */
+    }
+    
+    /* Specific styles for remove item button */
+    .remitem {
+      background-color: #cc2020; /* red background */
+    }
+    
+    /* Styles for button text */
+    .button button {
+      background: none; /* no background for button */
+      border: none; /* no border for button */
+      padding: 0; /* no padding for button */
+      color: #ffffff; /* make the text white */
+    }
+    
+    /* Styles for item tiles */
+    .tile {
+        display: inline-block; /* display tiles inline */
+        margin: 10px; /* margin around tiles */
+        padding: 10px; /* padding inside tiles */
+        border: 1px solid #ccc; /* border for tiles */
+        border-radius: 5px; /* rounded corners for tiles */
+        width: 250px; /* fixed width for tiles */
+        height: 330px; /* fixed height for tiles */
+        overflow: hidden; /* hide overflow content */
+    }
+    
+    /* Styles for item title */
+    .tile h2 {
+        font-size: 18px; /* font size for title */
+    }
+    
+    /* Styles for item price */
+    .tile p {
+        font-size: 14px; /* font size for price */
+    }
+    
+    /* Styles for read more link */
+    .tile .read-more {
+        font-size: 12px; /* smaller font size for read more */
+        color: #337ab7; /* link color */
+        cursor: pointer; /* pointer cursor on hover */
+    }
+    
+    /* Hover effect for read more link */
+    .tile .read-more:hover {
+        color: #23527c; /* darker color on hover */
+    }
+    
+    /* Hidden full text initially */
+    .tile .full-text {
+        display: none; /* hide full text */
+    }
+    
+    /* Styles for remove button */
+    .remove-btn {
+      background-color: #cc2020; /* red background for remove button */
+      color: white; /* white text */
+      border: none; /* no border */
+      padding: 5px 85px; /* padding for button */
+      margin-top: 0px; /* no margin on top */
+      cursor: pointer; /* pointer cursor on hover */
+    }
+    
+    /* Hover effect for remove button */
+    .remove-btn:hover {
+      background-color: #a01818; /* darker red on hover */
+    }
+    
+    /* Class to hide elements */
+    .hidden {
+      display: none; /* hide element */
+    }
+    
+    /* Centering class */
+    .center {
+      display: block; /* block display */
+      margin-left: auto; /* center horizontally */
+      margin-right: auto; /* center horizontally */
+      width: 50%; /* width of 50% */
+    }
+    
+    /* Center text alignment */
+    .text-center {
+      text-align: center; /* center text */
+    }
+    
+    /* Checkout button styling */
+    .checkout-button {
+      background-color: #4CAF50; /* green background */
+    }
+    form {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+  }
+  
+  form input[type="text"] {
+      padding: 10px;
+      width: 500px; /* Adjust width as needed */
+      border: 1px solid #ccc;
+      border-radius: 5px;
+  }
+  
+  form button {
+      padding: 10px 15px;
+      margin-left: 10px;
+      background-color: #4CAF50; /* Green background */
+      color: white; /* White text */
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+  }
+  
+  form button:hover {
+      background-color: #45a049; /* Darker green on hover */
+  }
+  </style>
+
+  <br>
+  <h1>Selling</h1> <!-- Main title for the page -->
+  
+  <br>
+
+  <div class="button-container">
+    <!-- Link to add item page -->
+    <a class="additem button" href="/btnAddItemPage"><button>Add Item</button></a>
+    <!-- Button to toggle remove item functionality -->
+    <a class="remitem button" id="toggleRemoveBtn"><button>Remove Item</button></a>
+    <!-- Checkout icon link -->
+    <a href="/checkout"><img src="{{ url_for('static', filename='checkout_icon.png') }}" alt="Checkout" style="width: 50px; height: 50px;"></a>
+  </div>
+
+  <form method="GET" action="{{ url_for('auth.search') }}" style="margin-bottom: 20px;">
+    <input type="text" maxlength="100" name="query" placeholder="Search for items..." required>
+    <button type="submit">Search</button>
+  </form>
+
+  <!-- Display items in tiles -->
+  {% for item in items %}
+  <div class="tile">
+    {% if item.image %}
+      <!-- Display item image if available -->
+      <img src="{{ url_for('auth.serve_image', item_id=item.id) }}"
+           alt="{{ item.txtItemName }}"
+           style="max-width: 200px; max-height: 200px;"
+           class="center"
+      >
+    {% endif %}
+    <br>
+    <!-- Link to item details -->
+    <a href="{{ url_for('auth.item_info', item_id=item.id) }}" class="text-center">
+      <h2>{{ item.txtItemName }}</h2> <!-- Item name -->
+      <p>Price: {{ item.txtItemPrice }}</p> <!-- Item price -->
+      <p>Stock: {{ item.intItemStock }}</p> <!-- Item stock -->
+    </a>
+    <!-- Button to add item to checkout -->
+    <a href="#" class="btn btn-success" onclick="addToCheckout({{ item.id }})">Buy</a>
+    <!-- Hidden button to remove item -->
+    <button class="remove-btn hidden" data-item-id="{{ item.id }}">Remove</button>
+  </div>
+  {% endfor %}
+
+  <!-- Confirmation Modal for item removal -->
+  <div id="confirmModal" class="modal" style="display:none; position:fixed; z-index:1; left:0; top:0; width:100%; height:100%; overflow:auto; background-color:rgba(0,0,0,0.4);">
+    <div class="modal-content" style="background-color:#fefefe; margin:15% auto; padding:20px; border:1px solid #888; width:80%;">
+      <p>Are you sure you want to remove this item?</p> <!-- Confirmation message -->
+      <button id="confirmRemove">Yes, Remove</button> <!-- Confirm removal button -->
+      <button id="cancelRemove">Cancel</button> <!-- Cancel button -->
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const toggleRemoveBtn = document.getElementById('toggleRemoveBtn'); // Button to toggle remove buttons
+      const removeButtons = document.querySelectorAll('.remove-btn'); // All remove buttons
+      const confirmModal = document.getElementById('confirmModal'); // Confirmation modal
+      let itemToRemove = null; // Variable to store item ID to remove
+    
+      // Toggle remove buttons visibility
+      toggleRemoveBtn.addEventListener('click', function() {
+        removeButtons.forEach(btn => btn.classList.toggle('hidden')); // Show/hide remove buttons
+      });
+    
+      // Show confirmation modal when remove button is clicked
+      removeButtons.forEach(btn => {
+        btn.addEventListener('click', function() {
+          itemToRemove = this.getAttribute('data-item-id'); // Get item ID
+          confirmModal.style.display = 'block'; // Show modal
+        });
+      });
+    
+      // Confirm remove action
+      document.getElementById('confirmRemove').addEventListener('click', function() {
+        if (itemToRemove) {
+          fetch(`/remove_item/${itemToRemove}`, {
+            method: 'POST' // Send POST request to remove item
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.success) {
+              // Remove the tile from the page
+              const removedTile = document.querySelector(`.tile button[data-item-id="${itemToRemove}"]`).closest('.tile');
+              removedTile.remove(); // Remove tile from DOM
+              confirmModal.style.display = 'none'; // Hide modal
+            } else {
+              alert(data.message); // Show error message
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error); // Log error
+            alert('An error occurred while removing the item.'); // Show error alert
+          });
+        }
+      });
+    
+      // Cancel remove action
+      document.getElementById('cancelRemove').addEventListener('click', function() {
+        confirmModal.style.display = 'none'; // Hide modal
+        itemToRemove = null; // Reset item to remove
+      });
+    });
+    
+    // Function to add item to checkout
+    function addToCheckout(itemId) {
+      console.log('Adding item to checkout:', itemId); // Debugging line
+      fetch(`/add_to_checkout/${itemId}`, {
+        method: 'POST' // Send POST request to add item to checkout
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server response:', data); // Debugging line
+        if (data.success) {
+          alert('Item added to checkout successfully!'); // Success message
+        } else {
+          alert(data.message); // Show error message
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error); // Log error
+        alert('An error occurred while adding the item to checkout.'); // Show error alert
+      });
+    }
+  </script>
+{% endblock %}

@@ -1,0 +1,13 @@
+<!-- customers_info.html -->
+{% extends "base.html" %} {% block title %}Customers{% endblock %} {% block content%}
+
+  <h1>{{ chosen_customer.name }}</h1>
+  <p>Email: {{ chosen_customer.email }}</p>
+  <p>First Registration: {{ chosen_customer.firstreg }}</p>
+  <p>Outstanding Payments: {{ chosen_customer.outpay }}</p>
+  <p>Location: {{ chosen_customer.logs }}</p>
+
+  <!--the above display relevant information about the items-->
+
+  <!--space for more fields-->
+{% endblock %}

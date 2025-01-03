@@ -1,0 +1,82 @@
+{% extends "base.html" %} <!-- Inherit from the base template -->
+{% block title %}Suppliers{% endblock %} <!-- Set the title of the page -->
+{% block content%}
+
+<style>
+    .tile {
+        display: inline-block; /* Display tiles inline */
+        margin: 10px; /* Space between tiles */
+        padding: 10px; /* Inner padding for tiles */
+        border: 1px solid #ccc; /* Light gray border */
+        border-radius: 5px; /* Rounded corners */
+        width: 250px; /* Increased width to accommodate more text */
+        height: 150px; /* Fixed height to prevent overflow */
+        overflow: hidden; /* Hide any content that overflows the tile */
+        text-overflow: ellipsis; /* Add an ellipsis to indicate truncated text */
+    }
+    .tile h2 {
+        font-size: 18px; /* Font size for supplier name */
+    }
+    .tile p {
+        font-size: 14px; /* Font size for supplier details */
+    }
+    .button button {
+        background: none; /* No background for button */
+        border: none; /* No border for button */
+        padding: 0; /* No padding for button */
+        color: #ffffff; /* Make the text white */
+    }
+    .button-container {
+        position: absolute; /* Positioning for button container */
+        top: 92px; /* Space from the top */
+        right: 50px; /* Space from the right edge */
+    }
+    form {
+        display: flex; /* Use flexbox for form layout */
+        justify-content: center; /* Center the form elements */
+        margin-bottom: 20px; /* Space below the form */
+    }
+   
+    form input[type="text"] {
+        padding: 10px; /* Inner padding for input */
+        width: 500px; /* Width of the input field */
+        border: 1px solid #ccc; /* Light gray border */
+        border-radius: 5px; /* Rounded corners for input */
+    }
+   
+    form button {
+        padding: 10px 15px; /* Padding for button */
+        margin-left: 10px; /* Space between input and button */
+        background-color: #4CAF50; /* Green background for button */
+        color: white; /* White text for button */
+        border: none; /* No border for button */
+        border-radius: 5px; /* Rounded corners for button */
+        cursor: pointer; /* Pointer cursor on hover */
+    }
+   
+    form button:hover {
+        background-color: #45a049; /* Darker green on hover */
+    }
+</style>
+
+<br>
+<h1>Suppliers</h1> <!-- Main heading for the page -->
+
+<a href="{{ url_for('auth.btnCreateSupplier') }}" class="btn btn-primary button-container">Create New Supplier</a> <!-- Link to create a new supplier -->
+
+<form method="GET" action="{{ url_for('auth.searchSuppliers') }}" style="margin-bottom: 20px;">
+    <input type="text" maxlength="100" name="query" placeholder="Search for suppliers..." required> <!-- Input for search query -->
+    <button type="submit">Search</button> <!-- Search button -->
+</form>
+
+<!-- Display suppliers in tiles -->
+{% for supplier in suppliers %} <!-- Loop through each supplier -->
+<div class="tile"> <!-- Create a tile for each supplier -->
+    <a href="{{ url_for('auth.supplier_info', supplier_id=supplier.id) }}"> <!-- Link to supplier info page -->
+        <h2>name: {{ supplier.name }}</h2> <!-- Display supplier name -->
+        <p>Email: {{ supplier.email }}</p> <!-- Display supplier email -->
+    </a>
+</div>
+{% endfor %} <!-- End of supplier loop -->
+
+{% endblock %} <!-- End of content block -->

@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+{% block title %}Create New Customers{% endblock %} 
+{% block content %}
+
+<form method="POST" action="{{ url_for('auth.btnCreateCustomer') }}">
+    <h3 align="center">Create new customers</h3>
+    <div class="form-group">
+      <label for="name">Customer Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        placeholder="Enter customer name"
+        required
+      />
+    </div>
+    <div class="form-group">
+      <label for="email">Customer Email Address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+        required
+      />
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{% endblock %}
